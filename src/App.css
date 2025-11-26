@@ -1,0 +1,178 @@
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  background-color: #f0f2f5;
+  color: #333;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  justify-content: center;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+.container {
+  width: 900px;
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+h1 {
+  text-align: center;
+  color: #2c3e50;
+  margin-bottom: 1.5rem;
+}
+
+.tabs {
+  display: flex;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid #eee;
+}
+
+.tabs button {
+  flex: 1;
+  background: none;
+  border: none;
+  padding: 1rem;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  color: #7f8c8d;
+  transition: all 0.3s;
+}
+
+.tabs button.active {
+  color: #3498db;
+  border-bottom: 2px solid #3498db;
+  background-color: #f8fbff;
+}
+
+.panel {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.input-group {
+  margin-bottom: 1rem;
+}
+
+.input-group label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.key-input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-family: monospace;
+  background-color: #fdfdfd;
+}
+
+.converter-box {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.column.full-width {
+  width: 100%;
+}
+
+textarea {
+  width: 100%;
+  height: 300px;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  resize: vertical;
+  font-family: monospace;
+  font-size: 0.9rem;
+  box-sizing: border-box;
+}
+
+textarea:focus {
+  outline: 2px solid #3498db;
+  border-color: transparent;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.btn {
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: transform 0.1s;
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.encrypt {
+  background-color: #27ae60;
+  color: white;
+}
+
+.decrypt {
+  background-color: #e67e22;
+  color: white;
+}
+
+.full-btn {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.error-border {
+  border: 1px solid red;
+}
+
+.error-msg {
+  color: red;
+  font-size: 0.8rem;
+  margin-top: 5px;
+}
+
+.hint {
+  background: #fff3cd;
+  padding: 10px;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  color: #856404;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 768px) {
+  .converter-box {
+    flex-direction: column;
+  }
+  .actions {
+    flex-direction: row;
+    width: 100%;
+  }
+  .btn {
+    flex: 1;
+  }
+}
