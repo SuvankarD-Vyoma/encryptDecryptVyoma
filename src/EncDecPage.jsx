@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { DEFAULT_SECRET_KEY, encryptData, decryptData, encryptAESGCM, decryptAESGCM } from "./utils";
+import { DEFAULT_SECRET_KEY, encryptData, decryptData, encryptAESGCM, decryptAESGCM, generateRandomIV, setGCMKey, getGCMKey } from "./utils";
 
 function EncDecPage({ onLogout }) {
     const [activeTab, setActiveTab] = useState("cryptojs");
@@ -10,8 +10,16 @@ function EncDecPage({ onLogout }) {
     const [gcmInput, setGcmInput] = useState("");
     const [gcmOutput, setGcmOutput] = useState("");
     const [gcmError, setGcmError] = useState("");
+    const [gcmKey, setGcmKeyState] = useState(getGCMKey());
     const [gcmIV, setGcmIV] = useState("aabbccddeeff001122334455");
     const [showGcmIV, setShowGcmIV] = useState(false);
+    const [showGcmKey, setShowGcmKey] = useState(false);
+
+    const handleGcmKeyChange = (e) => {
+        const newKey = e.target.value;
+        setGcmKeyState(newKey);
+        setGCMKey(newKey);
+    };
 
     const handleCjEncrypt = () => {
         setCjError("");
@@ -52,6 +60,11 @@ function EncDecPage({ onLogout }) {
             setGcmError(err.message);
             setGcmOutput("");
         }
+    };
+
+    const handleRandomizeIV = () => {
+        const newIV = generateRandomIV();
+        setGcmIV(newIV);
     };
 
     return (
@@ -213,38 +226,99 @@ function EncDecPage({ onLogout }) {
                 {activeTab === "aesgcm" && (
                     <div style={{ background: "white", padding: "2rem", borderRadius: "12px", boxShadow: "0 4px 12px rgba(0,0,0,0.1)" }}>
                         <div style={{ background: "#fff3cd", padding: "1rem", borderRadius: "8px", marginBottom: "1.5rem", color: "#856404" }}>
-                            <strong>Note:</strong> Uses Hardcoded HEX Key with Dynamic IV.
+                            <strong>Note:</strong> Uses Dynamic HEX Key with Dynamic IV.
+                        </div>
+                        <div style={{ marginBottom: "1.5rem" }}>
+                            <label style={{ display: "block", marginBottom: "0.5rem", color: "#555", fontWeight: "600" }}>
+                                Encryption Key (HEX):
+                            </label>
+                            <div style={{ position: "relative" }}>
+                                <input
+                                    type={showGcmKey ? "text" : "password"}
+                                    value={gcmKey}
+                                    onChange={handleGcmKeyChange}
+                                    style={{
+                                        width: "100%",
+                                        padding: "0.75rem",
+                                        paddingRight: "3rem",
+                                        border: "2px solid #e0e0e0",
+                                        borderRadius: "8px",
+                                        boxSizing: "border-box",
+                                        fontFamily: "monospace"
+                                    }}
+                                />
+                                <button
+                                    onClick={() => setShowGcmKey(!showGcmKey)}
+                                    style={{
+                                        position: "absolute",
+                                        right: "0.75rem",
+                                        top: "50%",
+                                        transform: "translateY(-50%)",
+                                        background: "none",
+                                        border: "none",
+                                        cursor: "pointer",
+                                        fontSize: "1.2rem",
+                                        padding: "0.25rem"
+                                    }}
+                                    title={showGcmKey ? "Hide Key" : "Show Key"}
+                                >
+                                    {showGcmKey ? "👁️" : "👁️‍🗨️"}
+                                </button>
+                            </div>
                         </div>
                         <div style={{ marginBottom: "1.5rem" }}>
                             <label style={{ display: "flex", alignItems: "center", marginBottom: "0.5rem", color: "#555", fontWeight: "600", gap: "0.5rem" }}>
                                 Initialization Vector (IV):
                                 <button
+                                    onClick={handleRandomizeIV}
+                                    style={{
+                                        padding: "0.375rem 0.75rem",
+                                        background: "#9b59b6",
+                                        color: "white",
+                                        border: "none",
+                                        borderRadius: "6px",
+                                        cursor: "pointer",
+                                        fontSize: "0.85rem",
+                                        fontWeight: "600"
+                                    }}
+                                    title="Generate Random IV"
+                                >
+                                    🎲 Randomize
+                                </button>
+                            </label>
+                            <div style={{ position: "relative" }}>
+                                <input
+                                    type={showGcmIV ? "text" : "password"}
+                                    value={gcmIV}
+                                    onChange={(e) => setGcmIV(e.target.value)}
+                                    style={{
+                                        width: "100%",
+                                        padding: "0.75rem",
+                                        paddingRight: "3rem",
+                                        border: "2px solid #e0e0e0",
+                                        borderRadius: "8px",
+                                        boxSizing: "border-box",
+                                        fontFamily: "monospace"
+                                    }}
+                                />
+                                <button
                                     onClick={() => setShowGcmIV(!showGcmIV)}
                                     style={{
+                                        position: "absolute",
+                                        right: "0.75rem",
+                                        top: "50%",
+                                        transform: "translateY(-50%)",
                                         background: "none",
                                         border: "none",
                                         cursor: "pointer",
                                         fontSize: "1.2rem",
-                                        padding: "0"
+                                        padding: "0.25rem"
                                     }}
                                     title={showGcmIV ? "Hide IV" : "Show IV"}
                                 >
                                     {showGcmIV ? "👁️" : "👁️‍🗨️"}
                                 </button>
-                            </label>
-                            <input
-                                type={showGcmIV ? "text" : "password"}
-                                value={gcmIV}
-                                onChange={(e) => setGcmIV(e.target.value)}
-                                style={{
-                                    width: "100%",
-                                    padding: "0.75rem",
-                                    border: "2px solid #e0e0e0",
-                                    borderRadius: "8px",
-                                    boxSizing: "border-box",
-                                    fontFamily: "monospace"
-                                }}
-                            />
+                            </div>
                         </div>
                         <div style={{ display: "grid", gridTemplateColumns: "1fr auto 1fr", gap: "1.5rem", alignItems: "start" }}>
                             <div>

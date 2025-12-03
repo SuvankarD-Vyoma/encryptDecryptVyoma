@@ -44,8 +44,16 @@ export const decryptData = (ciphertext, key) => {
 };
 
 // AES-GCM Configuration
-const GCM_KEY_HEX = "710f5a3bbcb3c168409c47774ba11897be76f08e997085377803271c4d42e961";
-const GCM_FIXED_IV_HEX = "aabbccddeeff001122334455";
+let GCM_KEY_HEX = import.meta.env.VITE_GCM_KEY_HEX || "710f5a3bbcb3c168409c47774ba11897be76f08e997085377803271c4d42e961";
+const GCM_FIXED_IV_HEX = import.meta.env.VITE_GCM_FIXED_IV_HEX || "aabbccddeeff001122334455";
+
+export const setGCMKey = (keyHex) => {
+  GCM_KEY_HEX = keyHex;
+};
+
+export const getGCMKey = () => {
+  return GCM_KEY_HEX;
+};
 
 const hexToUint8Array = (hex) =>
   new Uint8Array(hex.match(/.{1,2}/g).map((byte) => parseInt(byte, 16)));
@@ -108,8 +116,8 @@ export const decryptAESGCM = async (base64CipherText, ivHex = "aabbccddeeff00112
 
     if (bytes.length < 13) throw new Error("Ciphertext too short");
 
-    const iv = hexToUint8Array(ivHex);
-    const encryptedData = bytes.slice(iv.length);
+    const iv = bytes.slice(0, 12); // Extract 12-byte IV from ciphertext
+    const encryptedData = bytes.slice(12);
 
     const cryptoKey = await window.crypto.subtle.importKey(
       "raw", keyBytes, { name: "AES-GCM" }, false, ["decrypt"]
@@ -128,4 +136,12 @@ export const decryptAESGCM = async (base64CipherText, ivHex = "aabbccddeeff00112
   } catch (error) {
     throw new Error("GCM Decrypt Error: " + error.message);
   }
+};
+
+export const generateRandomIV = () => {
+  const iv = new Uint8Array(12);
+  window.crypto.getRandomValues(iv);
+  return Array.from(iv)
+    .map(b => b.toString(16).padStart(2, '0'))
+    .join('');
 };

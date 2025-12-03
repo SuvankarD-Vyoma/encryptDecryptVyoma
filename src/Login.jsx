@@ -20,7 +20,7 @@ function LoginPage({ onLogin }) {
                 method: 'POST',
                 headers: {
                     'accept': '*/*',
-                    'Authorization': 'Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoic3RhdGVhZG1pbiIsImV4cCI6MTc2NDIyMDk2MSwiaWF0IjoxNzY0MTM0NTYxLCJzY29wZSI6IlJPTEVfVVNFUiJ9.NBOn07FCaI0u24t6GNr7RHt2tWWug7yXDQQgb2dG-PsDbQc4qNbGDYrrdDzN1K0mMzBUtV3WE7HZI_qvZ-pDOQTowZaswunPuojzxd8WIsbLNiMQKD95HyEW0rIqPO7G_ky8khuId3rYwpwjaBKWVOTtuM_zs50L77fCtkzN-2QMIzvvlrmUTNEL5UzaXbAZAqRu0slyqrk2hjS5fIm0iYSuthbWy72SHnik_yhjnbtxG77xJaRy-DIc-fltVJdpmQl0aDr17D2xgk4U6iWucrJOB6ufx1Oy1SEmizdOxjK5oETzJTog0yj4ElojzHrIGKiUipDAZl3K5SLju1q7LIKZqDo-dXzS6eNzYM3YTL1lfnXbGbk8xPOYSRmsM6Sg8-j48yi6gw19EjR7eT5q6_izJCRAkF6sUCew-ewY448zF383Awx58By0NuJw8hfZpTInC5Dz70I7liqF3QkqIRTgKxNOi3hF262iOT7NCIK6G0P2QAAW4_W0zDKPhhs4Ox0R_od6twxyBp6L7g_3ejamJP3jTggHdPPFSWcrBfi3vpQ1Z8a7jFf_GzOOASwRJ6sDMJoCcA4OSqsgvn34fejrDd-IEhag8095a-UZzVYA-l_X42-L56wKXWoaAJwwHhWhN525l0tfzsZyaojcVWtTBp4HPBEtLW5Z8ZsobeI',
+                    'Authorization': 'Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoic3RhdGVhZG1pbiIsImV4cCI6MTc2NDMwODYyOSwiaWF0IjoxNzY0MjIyMjI5LCJzY29wZSI6IlJPTEVfVVNFUiJ9.jMrPY8p-lhF66a80tlWK7-jMeft81M84DJMgAXn0nlz4VtRTCpVyLMg9Hu6vwO1GOe8wzupOwM8XZ3LxbdkUwSIF9Mh213209oV5ksfSs8qL5sGDmALA0Wf8YUbWGYf-VjQTLQGLDfm71JFzEDV7aPG4OhN1WY9b-KgK4ET8HkMPjTZ7blR2_vA4r7pYaJ5Gne9VXmI6-x5OmJYZB2RJOjVm7JXznXFtxAgoapY0z4fYFpoGrgOAERniWxSk_aYJFM6luFx5e3nFgnGUwWl6jHXKlXVydfj9HABfhECJqs2Z8Ox5quRxBBeu5HqaOBUUT5YZqk9WH2PO8Za7c6UktV-shn5Xu6Sd0-fWlsdyCWxfpr9GdkZTaj12AbNHo9BYwAorMcqS4vfa8TBPvte0x7M8yBUlGaudlkHjaeS9EGHbSxAzU0cTCMPxvUuYrrQj6LyKR3FTkaseZxp1lA6fvEYozVWdANfFCLHMxm1vB3_onxnlJUZkQe2XhAWmFs6bTjf_7wwWdsxARmKDrOCfZP6CJjkSuk8HqMFQf8AxEzn-T7zNQDZHebs73GsUemMAWu4C_1BOoSoO1igPIk9d65c0IFw6gzYlgfbIdFuW-U996CRs1BFzYdfj3oPJbh01XTDt1uHN8HijodsHgS9T2tbLBgGcw6i0FwEbiUv4KI4',
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({ enc_data: encryptedData })
@@ -32,7 +32,7 @@ function LoginPage({ onLogin }) {
                 let userData;
                 try {
                     userData = await decryptAESGCM(result.data);
-                    console.log("Decrypted user data:", JSON.stringify(userData));
+                    console.log("Decrypted user data:" , JSON.stringify(userData));
                 } catch (decryptError) {
                     console.error("Decryption error:", decryptError);
                     userData = result.data;
